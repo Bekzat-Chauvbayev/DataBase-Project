@@ -1,0 +1,12 @@
+Declare
+    check_description EXCEPTION;
+    descr USERE.NAME%type;
+Begin
+    If length(descr)<5 then
+        Raise check_description;
+    End if;
+
+Exception
+    When check_description then
+        dbms_output.put_line ('length of description cannot be less than 5');
+End;
