@@ -1,0 +1,84 @@
+1) CREATE OR REPLACE PROCEDURE get_employee_statistics
+IS
+    CURSOR c_employee_stats IS
+        SELECT employee_id, COUNT(id_order) as number_of_orders
+        FROM orders
+        GROUP BY employee_id;
+        
+    empl_id NUMBER;
+    numb_of_orders NUMBER;
+BEGIN
+    OPEN c_employee_stats;
+    
+    LOOP
+        FETCH c_employee_stats INTO empl_id, numb_of_orders;
+        EXIT WHEN c_employee_stats%NOTFOUND;
+        
+        DBMS_OUTPUT.PUT_LINE('Id of employee: ' || empl_id);
+        DBMS_OUTPUT.PUT_LINE('Number of taken orders: ' || numb_of_orders);
+    END LOOP;
+    
+    CLOSE c_employee_stats;
+END;
+
+2)DECLARE
+t_id number := 12;
+t_name number := 18;
+t_desc varchar(50) := 'Row';
+t_email varchar(50) := none;
+ex_handler Exception;
+
+begin
+if length(t_desc) < 5 then 
+raise ex_handler;
+else
+insert into tablee
+values(t_id,t_name,t_desc,t_email);
+dbms_output.put_line('Added successfully');
+end if;
+
+exception 
+when ex_handler then
+dbms_output.put_line('description cannot be less than 5');
+end;
+
+3)create or replace TRIGGER rows_number
+BEFORE INSERT ON STUDENTS
+FOR EACH ROW
+DECLARE
+    num NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO num FROM STUDENTS;
+  DBMS_OUTPUT.PUT_LINE('Current number of rows: ' || num);
+END rows_number;
+
+4)CREATE OR REPLACE PROCEDURE update_employee_post (prev_post in varchar,p_post IN varchar)
+    IS
+        v_rows_affected NUMBER;
+    BEGIN
+        UPDATE EMPLOYEEE
+        SET post = p_post
+        where post = prev_post;
+
+        v_rows_affected := SQL%ROWCOUNT;
+
+        IF v_rows_affected = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE(v_rows_affected || ' guys with normal salary');
+        END IF;
+    END;
+
+5)CREATE OR REPLACE FUNCTION count_orders RETURN NUMBER IS
+  num_orders NUMBER;
+BEGIN
+  SELECT COUNT(*) INTO num_orders FROM orders;
+  RETURN num_orders;
+END;
+
+6)DECLARE
+  total_orders NUMBER;
+BEGIN
+  total_orders := count_orders;
+  DBMS_OUTPUT.PUT_LINE('Total Orders: ' || total_orders);
+END;
